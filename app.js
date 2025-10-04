@@ -21,6 +21,7 @@ function fetchFromGas() {
         })
         .then(data => {
             if (!Array.isArray(data)) throw new Error('API phải trả về mảng JSON.');
+            // Nếu API trả về {name,url,viewUrl} thì dùng url để hiển thị
             loadImages(data);
         })
         .catch(err => {
@@ -34,7 +35,7 @@ function loadFromTextarea() {
     const raw = document.getElementById('manualUrls').value.trim();
     if (!raw) return alert('Dán ít nhất 1 link ảnh');
     const lines = raw.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-    const imgs = lines.map((u, i) => ({ name: 'image_' + (i + 1), url: u }));
+    const imgs = lines.map((u, i) => ({ name: 'image_' + (i + 1), url: u, viewUrl: u }));
     loadImages(imgs);
 }
 
@@ -46,10 +47,14 @@ function loadImages(images) {
         container.innerHTML = '<p>Không có ảnh.</p>';
         return;
     }
+
     container.innerHTML = images.map((img, idx) => `
     <div class="image-card">
       <img src="${img.url}" alt="${escapeHtml(img.name)}" />
       <div class="meta">${escapeHtml(img.name)}</div>
+      <div class="actions">
+        <a href="${img.viewUrl}" target="_blank">🔗 Xem Drive</a>
+      </div>
     </div>
   `).join('');
 }
