@@ -1,66 +1,56 @@
 <!doctype html>
 <html lang="vi">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>IMEI Image Viewer — Static</title>
-<link rel="stylesheet" href="styles.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>IMEI Image Viewer — Static</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="topbar">
-    <h1>IMEI Image Viewer</h1>
-    <p class="subtitle">Nhập IMEI hoặc dán link ảnh / folder. Copy & download ảnh dễ dàng. (Dùng GitHub Pages/Netlify)</p>
-  </header>
+    <header class="topbar">
+        <h1>IMEI Image Viewer</h1>
+        <p class="subtitle">Nhập IMEI hoặc dán link ảnh. Copy & download ảnh dễ dàng.</p>
+    </header>
 
-  <main class="container">
-    <section class="card">
-      <h2>1) Kết nối Apps Script (tuỳ chọn)</h2>
-      <p>Nếu bạn muốn lấy ảnh tự động từ Google Sheets/Drive, deploy 1 Apps Script web app trả JSON và dán URL ở đây (ví dụ: <code>https://script.google.com/macros/s/XXX/exec</code>).</p>
-      <label>Apps Script API URL:</label>
-      <input id="gasUrl" placeholder="https://script.google.com/macros/s/AKf.../exec" />
-      <label>IMEI:</label>
-      <input id="imeiInput" placeholder="Nhập IMEI nếu dùng Apps Script" />
-      <div class="row">
-        <button id="btnFetch" onclick="fetchFromGas()">🔍 Lấy ảnh từ Apps Script</button>
-      </div>
-    </section>
+    <main class="container">
 
-    <section class="card">
-      <h2>2) Hoặc dán danh sách link ảnh</h2>
-      <p>Dán link ảnh (mỗi dòng 1 link). Các link là URL trực tiếp tới ảnh (jpg/png) hoặc link <code>https://drive.google.com/uc?export=view&id=...</code> / <code>https://lh3.googleusercontent.com/...</code>.</p>
-      <textarea id="manualUrls" placeholder="https://.../img1.jpg
+        <!-- 1) Kết nối Apps Script -->
+        <section class="card">
+            <h2>1) Lấy ảnh từ Apps Script (tuỳ chọn)</h2>
+            <p>Deploy Apps Script trả JSON từ Google Sheets/Drive và dán URL dưới đây:</p>
+            <label>Apps Script API URL:</label>
+            <input id="gasUrl" placeholder="https://script.google.com/macros/s/AKfycby2PBdBzfmbSzQtZtgfvMqo1yDT8fbONSA2j4wzzumm2K8YgoNWHmfeW1yY6d5HlRsRcg/exec" />
+            <label>IMEI:</label>
+            <input id="imeiInput" placeholder="Nhập IMEI nếu dùng Apps Script" />
+            <div class="row">
+                <button onclick="fetchFromGas()">🔍 Lấy ảnh từ Apps Script</button>
+            </div>
+        </section>
+
+        <!-- 2) Dán link ảnh -->
+        <section class="card">
+            <h2>2) Dán danh sách link ảnh</h2>
+            <textarea id="manualUrls" placeholder="https://.../img1.jpg
 https://.../img2.jpg" rows="6"></textarea>
-      <div class="row">
-        <button onclick="loadFromTextarea()">📥 Load ảnh từ danh sách</button>
-        <button onclick="clearAll()">🧹 Xóa</button>
-      </div>
-    </section>
+            <div class="row">
+                <button onclick="loadFromTextarea()">📥 Load ảnh từ danh sách</button>
+                <button onclick="clearAll()">🧹 Xóa toàn bộ</button>
+            </div>
+        </section>
 
-    <section class="card">
-      <h2>3) Ảnh</h2>
-      <div class="controls">
-        <button onclick="copyAllLinks()">📋 Copy tất cả link</button>
-        <button onclick="openCopyBox()">📸 Mở hộp ảnh (dùng Ctrl+A → Ctrl+C hoặc thử nút Copy trong hộp)</button>
-        <button onclick="downloadAll()">⬇️ Tải tất cả ảnh</button>
-      </div>
+        <!-- 3) Ảnh & hành động -->
+        <section class="card">
+            <h2>3) Ảnh</h2>
+            <div class="controls">
+                <button onclick="copyAllImages()">📋 Copy tất cả ảnh</button>
+                <button onclick="downloadAllImages()">⬇️ Tải tất cả ảnh</button>
+            </div>
+            <div id="images" class="images-grid" aria-live="polite"></div>
+        </section>
 
-      <div id="images" class="images-grid" aria-live="polite"></div>
-    </section>
-  </main>
+    </main>
 
-  <!-- Copy modal -->
-  <div id="copyBox" class="modal" style="display:none">
-    <div class="modal-content">
-      <h3>📸 Hộp ảnh — Copy ảnh</h3>
-      <p>Nhấn <b>Ctrl+A</b> → <b>Ctrl+C</b> để copy toàn bộ ảnh; hoặc thử nút "Copy ảnh (thử)" để dùng Clipboard API (nếu browser cho phép).</p>
-      <div id="copyContent" class="images-grid"></div>
-      <div class="modal-actions">
-        <button onclick="tryCopyAll()">📋 Copy ảnh (thử)</button>
-        <button onclick="closeCopyBox()">Đóng</button>
-      </div>
-    </div>
-  </div>
-
-<script src="app.js"></script>
+    <!-- Script -->
+    <script src="app.js"></script>
 </body>
 </html>
