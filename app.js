@@ -50,7 +50,7 @@ function loadImages(images) {
 
     container.innerHTML = images.map((img, idx) => `
     <div class="image-card">
-      <img src="${img.url}" alt="${escapeHtml(img.name)}" />
+      <img src="${img.viewUrl}" alt="${escapeHtml(img.name)}" />
       <div class="meta">${escapeHtml(img.name)}</div>
       <div class="actions">
         <a href="${img.viewUrl}" target="_blank">🔗 Xem Drive</a>
@@ -58,6 +58,7 @@ function loadImages(images) {
     </div>
   `).join('');
 }
+
 
 // -------------------- COPY ALL IMAGES TO CLIPBOARD --------------------
 async function copyAllImages() {
